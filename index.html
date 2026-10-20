@@ -6,13 +6,13 @@
 <title>SHIVAM — Festive Ethnic Wear & Anarkalis, Trichy</title>
 <meta name="description" content="Explore Shivam' signature collection of Indian ethnic wear. Handcrafted kurtas, sherwanis, banarasi sarees, lehengas, and chikankari kurtis for men and women.">
 <meta name="keywords" content="indian ethnic wear, men kurta, nehru jacket, sherwani, women anarkali, banarasi saree, chikankari kurti, lehenga choli, shivam ethnic wear trichy">
-<meta property="og:title" content="SHIVAM — Luxury Indian Ethnic Wear Collection">
-<meta property="og:description" content="Handcrafted luxury ethnic wear for men and women. Explore pure silk banarasi sarees, chikankari kurtas, sherwanis and festive anarkalis.">
-<meta property="og:url" content="https://vela-store.netlify.app/">
+<meta property="og:title" content="SHIVAM — Festive Anarkalis & Designer Gowns, Trichy">
+<meta property="og:description" content="Explore Shivam's handcrafted festive Anarkalis and designer gowns in Trichy. Order directly on WhatsApp.">
+<meta property="og:url" content="https://shivam-trichy.netlify.app/">
 <meta property="og:site_name" content="SHIVAM">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://vela-store.netlify.app/images/share-preview.jpg?v=2">
-<meta property="og:image:secure_url" content="https://vela-store.netlify.app/images/share-preview.jpg?v=2">
+<meta property="og:image" content="https://shivam-trichy.netlify.app/trichy-rani-pink-anarkali.jpg">
+<meta property="og:image:secure_url" content="https://shivam-trichy.netlify.app/trichy-rani-pink-anarkali.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -20,8 +20,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SHIVAM — Luxury Indian Ethnic Wear">
 <meta name="twitter:description" content="Handcrafted luxury ethnic wear for men and women. Explore our signature collection.">
-<meta name="twitter:image" content="https://vela-store.netlify.app/images/share-preview.jpg?v=2">
+<meta name="twitter:image" content="https://shivam-trichy.netlify.app/trichy-rani-pink-anarkali.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+<script data-goatcounter="https://shivam-demo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -1179,6 +1180,15 @@ function renderRecentlyViewed(){
 /* ---------- QUICK VIEW MODAL WITH PHOTO GALLERY & SWATCHES ---------- */
 function openQuickView(id){
   const p = PRODUCTS.find(x=>x.id===id);
+  try {
+    if(window.goatcounter && window.goatcounter.count && p){
+      window.goatcounter.count({
+        path: 'view-product-details',
+        title: 'View: ' + p.name,
+        event: true
+      });
+    }
+  } catch(e){}
   selectedSizeInModal[id] = selectedSizeInModal[id] || p.sizes[0];
   selectedColorInModal[id] = selectedColorInModal[id] || p.colors[0];
   addRecentlyViewed(id);
@@ -1272,6 +1282,17 @@ function addToCart(p, size, color, qty){
   renderCart();
   openCart();
   showToast(p.name + ' added to Bag');
+
+  // Track Add to Bag Event in GoatCounter
+  try {
+    if(window.goatcounter && window.goatcounter.count){
+      window.goatcounter.count({
+        path: 'click-add-to-bag',
+        title: 'Add to Bag: ' + p.name + ' (' + size + ')',
+        event: true
+      });
+    }
+  } catch(e){}
 }
 
 function renderCart(){
@@ -1337,6 +1358,17 @@ $('#checkoutBtn').addEventListener('click', ()=>{
   if(!cart.length){ showToast('Your Bag is empty'); return; }
   const subtotal = cart.reduce((s,c)=> s + (c.price * c.qty), 0);
   const total = Math.max(0, subtotal - couponDiscount);
+
+  // Track WhatsApp Checkout Click in GoatCounter
+  try {
+    if(window.goatcounter && window.goatcounter.count){
+      window.goatcounter.count({
+        path: 'click-whatsapp-order',
+        title: 'Order on WhatsApp (₹' + total + ')',
+        event: true
+      });
+    }
+  } catch(e){}
   let msg = "Hi Shivam! I'd like to place an order from your online store:\n\n";
   cart.forEach((c, i)=>{
     msg += `${i+1}. *${c.name}* (Size: ${c.size}) x${c.qty} — ${fmt(c.price * c.qty)}\n`;
